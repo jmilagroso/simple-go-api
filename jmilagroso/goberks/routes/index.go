@@ -43,6 +43,7 @@ func GetIndex(w http.ResponseWriter, r *http.Request) {
 // GetIndex - Get index route
 func (dbClient *IndexDBClient) GetUsers(w http.ResponseWriter, r *http.Request) {
 
+	// Output
 	var rows []User
 
 	_, dbErr := dbClient.Query(&rows, `SELECT id, username, email FROM user ORDER BY id DESC LIMIT 10`)
