@@ -63,10 +63,28 @@
 			"revisionTime": "2019-01-31T13:02:37Z"
 		},
 		{
+			"checksumSHA1": "H8wo+NR5z+VRl0wqPYpVQfC06ks=",
+			"path": "github.com/go-stack/stack",
+			"revision": "2fee6af1a9795aafbe0253a0cfbdf668e1fb8a9a",
+			"revisionTime": "2018-08-26T13:48:48Z"
+		},
+		{
+			"checksumSHA1": "Y2MOwzNZfl4NRNDbLCZa6sgx7O0=",
+			"path": "github.com/golang/protobuf/proto",
+			"revision": "347cf4a86c1cb8d262994d8ef5924d4576c5b331",
+			"revisionTime": "2019-01-09T07:22:47Z"
+		},
+		{
 			"checksumSHA1": "yGnECJsPZBlk5khJmLUP8thNNxM=",
 			"path": "github.com/gorilla/mux",
 			"revision": "a7962380ca08b5a188038c69871b8d3fbdf31e89",
 			"revisionTime": "2019-01-25T16:05:53Z"
+		},
+		{
+			"checksumSHA1": "m2zHf64ZWfmUd/J/KzHp3Hk/Qik=",
+			"path": "github.com/inconshreveable/log15",
+			"revision": "67afb5ed74ec82fd7ac8f49d27c509ac6f991970",
+			"revisionTime": "2018-08-18T16:46:46Z"
 		},
 		{
 			"checksumSHA1": "4eelJOSLZoDzLuaJvgilOBVNovU=",
@@ -81,10 +99,106 @@
 			"revisionTime": "2018-11-20T19:47:48Z"
 		},
 		{
+			"checksumSHA1": "k9ISMZF/rmRXCcO7xzETnWT5svU=",
+			"path": "github.com/kevinburke/go-types",
+			"revision": "31250f49d75aade5d5389ab908d0eae15654bd41",
+			"revisionTime": "2018-11-03T05:01:46Z"
+		},
+		{
+			"checksumSHA1": "w74xdBmV0AGpq5Bky1Xx49grVOk=",
+			"path": "github.com/kevinburke/go.uuid",
+			"revision": "d8da80a9dcbb2e579198ff4593e8837a1963f570",
+			"revisionTime": "2018-07-11T18:53:29Z"
+		},
+		{
+			"checksumSHA1": "Jy2lkTN9Y/oWxv2JS2ALJCyIPqg=",
+			"path": "github.com/kevinburke/rest",
+			"revision": "54a8b110959553907c102f05f4182840d8f1c92c",
+			"revisionTime": "2018-04-24T04:00:19Z"
+		},
+		{
+			"checksumSHA1": "so0TrlqoMcOK04HkSvfyqcn6lrY=",
+			"path": "github.com/kevinburke/twilio-go",
+			"revision": "113f30c37433cfcec823220cc8ece2be14619bf0",
+			"revisionTime": "2018-12-02T20:18:42Z"
+		},
+		{
+			"checksumSHA1": "SEnjvwVyfuU2xBaOfXfwPD5MZqk=",
+			"path": "github.com/mattn/go-colorable",
+			"revision": "efa589957cd060542a26d2dd7832fd6a6c6c3ade",
+			"revisionTime": "2018-03-10T13:32:14Z"
+		},
+		{
+			"checksumSHA1": "GiVgQkx5acnq+JZtYiuHPlhHoso=",
+			"path": "github.com/mattn/go-isatty",
+			"revision": "3fb116b820352b7f0c281308a4d6250c22d94e27",
+			"revisionTime": "2018-08-30T10:17:45Z"
+		},
+		{
+			"checksumSHA1": "vzu0skKxGw8z60lTzAahSe+3Mog=",
+			"path": "github.com/sendgrid/rest",
+			"revision": "8f995deebcbbba440a60746115fdb5524e7cf3fc",
+			"revisionTime": "2018-11-02T20:48:19Z"
+		},
+		{
+			"checksumSHA1": "kTKFpnAEy3+S+JSJdqLT5h1jVxk=",
+			"path": "github.com/sendgrid/sendgrid-go",
+			"revision": "1e8aa9067d63e4b343391d8bff52ddfa4fcc521c",
+			"revisionTime": "2019-01-24T23:51:27Z"
+		},
+		{
+			"checksumSHA1": "pUgMWMSL+6d4+jjhd0cIjVXJdIw=",
+			"path": "github.com/sendgrid/sendgrid-go/helpers/mail",
+			"revision": "1e8aa9067d63e4b343391d8bff52ddfa4fcc521c",
+			"revisionTime": "2019-01-24T23:51:27Z"
+		},
+		{
+			"checksumSHA1": "syVZskC5CRNdIaisxqimbeA915I=",
+			"path": "github.com/ttacon/builder",
+			"revision": "c099f663e1c235176c175644792c5eb282017ad7",
+			"revisionTime": "2017-05-18T17:14:03Z"
+		},
+		{
+			"checksumSHA1": "x+AQxiUm930x9xGzfn/G+2G1G9s=",
+			"path": "github.com/ttacon/libphonenumber",
+			"revision": "23ddf903e8f8800d2857645eb155ffbe15cd02ee",
+			"revisionTime": "2019-01-08T14:51:53Z"
+		},
+		{
 			"checksumSHA1": "1MGpGDQqnUoRpv7VEcQrXOBydXE=",
 			"path": "golang.org/x/crypto/pbkdf2",
 			"revision": "b8fe1690c61389d7d2a8074a507d1d40c5d30448",
 			"revisionTime": "2019-01-30T22:18:58Z"
+		},
+		{
+			"checksumSHA1": "GtamqiJoL7PGHsN454AoffBFMa8=",
+			"path": "golang.org/x/net/context",
+			"revision": "d26f9f9a57f3fab6a695bec0d84433c2c50f8bbf",
+			"revisionTime": "2018-09-25T13:55:50Z"
+		},
+		{
+			"checksumSHA1": "iEK5hCRfrkdc1JOJsaiWuymHmeQ=",
+			"path": "golang.org/x/sync/errgroup",
+			"revision": "37e7f081c4d4c64e13b10787722085407fe5d15f",
+			"revisionTime": "2018-09-24T18:15:43Z"
+		},
+		{
+			"checksumSHA1": "55K1DBNvzs8bfXbCGUuoGmUDOsk=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "aca44879d5644da7c5b8ec6a1115e9b6ea6c40d9",
+			"revisionTime": "2019-01-30T10:46:27Z"
+		},
+		{
+			"checksumSHA1": "/xRHTpN8WOK4nmZjJ1f96ER1b/o=",
+			"path": "gopkg.in/mgo.v2/bson",
+			"revision": "9856a29383ce1c59f308dd1cf0363a79b5bef6b5",
+			"revisionTime": "2018-07-05T11:36:04Z"
+		},
+		{
+			"checksumSHA1": "XQsrqoNT1U0KzLxOFcAZVvqhLfk=",
+			"path": "gopkg.in/mgo.v2/internal/json",
+			"revision": "9856a29383ce1c59f308dd1cf0363a79b5bef6b5",
+			"revisionTime": "2018-07-05T11:36:04Z"
 		},
 		{
 			"checksumSHA1": "OU/wHTJqhyQfyRnXMVWx1Ox06kQ=",
