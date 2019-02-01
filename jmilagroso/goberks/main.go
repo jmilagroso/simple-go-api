@@ -7,6 +7,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -36,13 +37,13 @@ func main() {
 
 	log.Println(addr)
 	fmt.Println(addr)
-	
+
 	//--- Postgresql Server Connection --- //
 	pgsqlDB = pg.Connect(&pg.Options{
 		// User:     h.GetEnvValue("POSTGRESQL_USER"),
 		// Password: h.GetEnvValue("POSTGRESQL_PASSWORD"),
 		// Database: h.GetEnvValue("POSTGRESQL_DB"),
-		Addr: ,
+		Addr: addr,
 	})
 
 	defer pgsqlDB.Close()
