@@ -86,7 +86,7 @@ func main() {
 	//r.Use(m.AuthMiddleware)
 
 	srv := &http.Server{
-		Addr: h.GetEnvValue("HTTP_SERVER_ADDRESS"),
+		Addr: ":" + os.Getenv("PORT"),
 		// Good practice to set timeouts to avoid Slowloris attacks.
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
