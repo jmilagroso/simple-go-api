@@ -21,11 +21,9 @@ type Index struct {
 }
 
 type User struct {
-	Id           string
-	Email        string
-	RegisteredOn string
-	PublicId     string
-	Username     string
+	Id       string
+	Username string
+	Email    string
 }
 
 // IndexDBClient db client(s) local type
@@ -47,7 +45,7 @@ func (dbClient *IndexDBClient) GetUsers(w http.ResponseWriter, r *http.Request) 
 
 	var rows []User
 
-	_, dbErr := dbClient.Query(&rows, `SELECT id, email, registered_on, public_id, username FROM user ORDER BY id DESC`)
+	_, dbErr := dbClient.Query(&rows, `SELECT id, username, email FROM user ORDER BY id DESC`)
 	h.Error(dbErr)
 
 	h.Error(json.NewEncoder(w).Encode(rows))
