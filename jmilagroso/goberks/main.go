@@ -6,8 +6,8 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -33,17 +33,15 @@ var pgsqlDB *pg.DB
 var dbClient blueprints.DBClient
 
 func main() {
-	addr := os.Getenv("DATABASE_URL") + "?sslmode=require"
-
-	log.Println(addr)
-	fmt.Println(addr)
-
 	//--- Postgresql Server Connection --- //
 	pgsqlDB = pg.Connect(&pg.Options{
 		// User:     h.GetEnvValue("POSTGRESQL_USER"),
 		// Password: h.GetEnvValue("POSTGRESQL_PASSWORD"),
 		// Database: h.GetEnvValue("POSTGRESQL_DB"),
-		Addr: addr,
+		Addr: os.Getenv("DATABASE_URL"),
+		TLSConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
 	})
 
 	defer pgsqlDB.Close()
