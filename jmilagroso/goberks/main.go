@@ -22,6 +22,8 @@ import (
 	"quadx.xyz/jmilagroso/goberks/routes"
 
 	"github.com/go-pg/pg"
+
+	m "quadx.xyz/jmilagroso/goberks/middlewares"
 )
 
 var redisClient *redis.Client
@@ -83,7 +85,7 @@ func main() {
 	// Webhook notifier
 	r.HandleFunc("/", routes.GetIndex).Methods("GET")
 
-	//r.Use(m.AuthMiddleware)
+	r.Use(m.JSON)
 
 	srv := &http.Server{
 		Addr: ":" + os.Getenv("PORT"),
