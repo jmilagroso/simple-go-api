@@ -34,9 +34,7 @@ var dbClient blueprints.DBClient
 
 func main() {
 	parsedURL, err := url.Parse(os.Getenv("DATABASE_URL"))
-	if err != nil {
-		panic(err)
-	}
+	h.Error(err)
 
 	pgOptions := &pg.Options{
 		User:     parsedURL.User.Username(),
@@ -49,6 +47,8 @@ func main() {
 	}
 
 	pgsqlDB := pg.Connect(pgOptions)
+
+	log.Println(pgsqlDB)
 
 	defer pgsqlDB.Close()
 	// --- Postgresql Server Connection --- //
@@ -65,7 +65,7 @@ func main() {
 	// --- Tile38 Server Connection --- //
 
 	var wait time.Duration
-	flag.DurationVar(&wait, "graceful-timeout", time.Second*15,
+	flag.DurationVar(&wait, "graceful-timeout", time.Second*30,
 		"the duration for which the server gracefully "+
 			"wait for existing connections to finish - e.g. 15s or 1m")
 	flag.Parse()
