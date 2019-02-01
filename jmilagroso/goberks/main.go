@@ -98,8 +98,8 @@ func main() {
 	srv := &http.Server{
 		Addr: ":" + os.Getenv("PORT"),
 		// Good practice to set timeouts to avoid Slowloris attacks.
-		WriteTimeout: time.Second * 15,
-		ReadTimeout:  time.Second * 15,
+		WriteTimeout: time.Second * 30,
+		ReadTimeout:  time.Second * 30,
 		IdleTimeout:  time.Second * 60,
 		Handler:      r, // Pass our instance of gorilla/mux in.
 	}
