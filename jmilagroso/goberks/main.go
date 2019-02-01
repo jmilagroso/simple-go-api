@@ -32,14 +32,14 @@ var pgsqlDB *pg.DB
 var dbClient blueprints.DBClient
 
 func main() {
-	// --- Postgresql Server Connection --- //
-	// pgsqlDB = pg.Connect(&pg.Options{
-	// 	User:     h.GetEnvValue("POSTGRESQL_USER"),
-	// 	Password: h.GetEnvValue("POSTGRESQL_PASSWORD"),
-	// 	Database: h.GetEnvValue("POSTGRESQL_DB"),
-	// })
+	//--- Postgresql Server Connection --- //
+	pgsqlDB = pg.Connect(&pg.Options{
+		User:     h.GetEnvValue("POSTGRESQL_USER"),
+		Password: h.GetEnvValue("POSTGRESQL_PASSWORD"),
+		Database: h.GetEnvValue("POSTGRESQL_DB"),
+	})
 
-	// defer pgsqlDB.Close()
+	defer pgsqlDB.Close()
 	// --- Postgresql Server Connection --- //
 
 	// --- Tile38 Server Connection --- //
@@ -84,6 +84,9 @@ func main() {
 
 	// Webhook notifier
 	r.HandleFunc("/", routes.GetIndex).Methods("GET")
+
+	index := routes.IndexDBClient{DB: pgsqlDB, Client: redisClient}
+	r.HandleFunc("/users", index.GetUsers).Methods("GET")
 
 	r.Use(m.JSON)
 
