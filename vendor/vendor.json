@@ -63,6 +63,12 @@
 			"revisionTime": "2019-01-31T13:02:37Z"
 		},
 		{
+			"checksumSHA1": "yGnECJsPZBlk5khJmLUP8thNNxM=",
+			"path": "github.com/gorilla/mux",
+			"revision": "a7962380ca08b5a188038c69871b8d3fbdf31e89",
+			"revisionTime": "2019-01-25T16:05:53Z"
+		},
+		{
 			"checksumSHA1": "4eelJOSLZoDzLuaJvgilOBVNovU=",
 			"path": "github.com/jinzhu/inflection",
 			"revision": "04140366298a54a039076d798123ffa108fff46c",
