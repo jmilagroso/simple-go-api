@@ -46,7 +46,7 @@ func (dbClient *IndexDBClient) GetUsers(w http.ResponseWriter, r *http.Request) 
 	// Output
 	var rows []User
 
-	_, dbErr := dbClient.Query(&rows, `SELECT id, username, email FROM users ORDER BY id DESC LIMIT 10`)
+	_, dbErr := dbClient.Query(&rows, `SELECT id, username, email FROM users ORDER BY id DESC`)
 	h.Error(dbErr)
 
 	h.Error(json.NewEncoder(w).Encode(rows))
