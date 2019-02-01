@@ -9,7 +9,6 @@ import (
 	"flag"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 	"os/signal"
 	"time"
@@ -33,23 +32,10 @@ var pgsqlDB *pg.DB
 var dbClient blueprints.DBClient
 
 func main() {
-	parsedURL, err := url.Parse(os.Getenv("DATABASE_URL"))
-	h.Error(err)
-
-	pgOptions := &pg.Options{
-		User:     parsedURL.User.Username(),
-		Database: parsedURL.Path[1:],
-		Addr:     parsedURL.Host,
-	}
-
-	if password, ok := parsedURL.User.Password(); ok {
-		pgOptions.Password = password
-	}
-
-	pgsqlDB := pg.Connect(pgOptions)
-
-	log.Println(pgsqlDB)
-
+	options, _ := pg.ParseURL(os.Getenv("DATABASE_URL"))
+	// options.TLSConfig.ServerName = "ec2-54-163-234-4.compute-1.amazonaws.com"
+	options.TLSConfig.InsecureSkipVerify = true
+	pgsqlDB = pg.Connect(options)
 	defer pgsqlDB.Close()
 	// --- Postgresql Server Connection --- //
 
