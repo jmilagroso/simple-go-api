@@ -9,9 +9,9 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
-	"strings"
 	"time"
 
 	"quadx.xyz/jmilagroso/goberks/blueprints"
@@ -33,29 +33,22 @@ var pgsqlDB *pg.DB
 var dbClient blueprints.DBClient
 
 func main() {
-	url := os.Getenv("DATABASE_URL")
-	url = strings.TrimPrefix(url, "postgres://")
+	parsedURL, err := url.Parse(os.Getenv("DATABASE_URL"))
+	if err != nil {
+		panic(err)
+	}
 
-	dbNameStartsAt := strings.LastIndex(url, "/") + 1
-	database := url[dbNameStartsAt:]
-	url = url[:dbNameStartsAt-1]
+	pgOptions := &pg.Options{
+		User:     parsedURL.User.Username(),
+		Database: parsedURL.Path[1:],
+		Addr:     parsedURL.Host,
+	}
 
-	authAndHost := strings.Split(url, "@")
-	auth := strings.Split(authAndHost[0], ":")
-	username := auth[0]
-	password := auth[1]
-	hostAndPort := authAndHost[1]
+	if password, ok := parsedURL.User.Password(); ok {
+		pgOptions.Password = password
+	}
 
-	//--- Postgresql Server Connection --- //
-	pgsqlDB = pg.Connect(&pg.Options{
-		User:     username,
-		Password: password,
-		Database: database,
-		Addr:     hostAndPort,
-		// TLSConfig: &tls.Config{
-		// 	InsecureSkipVerify: true,
-		// },
-	})
+	pgsqlDB := pg.Connect(pgOptions)
 
 	defer pgsqlDB.Close()
 	// --- Postgresql Server Connection --- //
