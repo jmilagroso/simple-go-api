@@ -6,7 +6,6 @@ package main
 
 import (
 	"context"
-	"crypto/tls"
 	"flag"
 	"log"
 	"net/http"
@@ -53,9 +52,9 @@ func main() {
 		Password: password,
 		Database: database,
 		Addr:     hostAndPort,
-		TLSConfig: &tls.Config{
-			InsecureSkipVerify: true,
-		},
+		// TLSConfig: &tls.Config{
+		// 	InsecureSkipVerify: true,
+		// },
 	})
 
 	defer pgsqlDB.Close()
