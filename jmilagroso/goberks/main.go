@@ -37,7 +37,7 @@ func main() {
 		// User:     h.GetEnvValue("POSTGRESQL_USER"),
 		// Password: h.GetEnvValue("POSTGRESQL_PASSWORD"),
 		// Database: h.GetEnvValue("POSTGRESQL_DB"),
-		Addr: os.Getenv("DATABASE_URL")
+		Addr: os.Getenv("DATABASE_URL") + " sslmode=require",
 	})
 
 	defer pgsqlDB.Close()
