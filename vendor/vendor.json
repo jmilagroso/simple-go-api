@@ -2,5 +2,9 @@
 	"comment": "",
 	"ignore": "test",
 	"package": [],
-	"rootPath": "quadx.xyz"
+	"rootPath": "quadx.xyz/jmilagroso/goberks",
+	"heroku": {
+		"install" : [ "./..." ],
+        "goVersion": "go1.11.4"
+	}
 }
