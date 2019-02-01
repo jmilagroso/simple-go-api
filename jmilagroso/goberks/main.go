@@ -33,7 +33,7 @@ var pgsqlDB *pg.DB
 var dbClient blueprints.DBClient
 
 func main() {
-	addr := os.Getenv("DATABASE_URL") + " sslmode=require"
+	addr := os.Getenv("DATABASE_URL") + "?sslmode=require"
 
 	log.Println(addr)
 	fmt.Println(addr)
