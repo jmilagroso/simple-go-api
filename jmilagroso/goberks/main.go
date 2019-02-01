@@ -34,9 +34,10 @@ var dbClient blueprints.DBClient
 func main() {
 	//--- Postgresql Server Connection --- //
 	pgsqlDB = pg.Connect(&pg.Options{
-		User:     h.GetEnvValue("POSTGRESQL_USER"),
-		Password: h.GetEnvValue("POSTGRESQL_PASSWORD"),
-		Database: h.GetEnvValue("POSTGRESQL_DB"),
+		// User:     h.GetEnvValue("POSTGRESQL_USER"),
+		// Password: h.GetEnvValue("POSTGRESQL_PASSWORD"),
+		// Database: h.GetEnvValue("POSTGRESQL_DB"),
+		Addr: os.Getenv("DATABASE_URL")
 	})
 
 	defer pgsqlDB.Close()
