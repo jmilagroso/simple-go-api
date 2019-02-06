@@ -33,10 +33,11 @@ var dbClient blueprints.DBClient
 
 func main() {
 	options, _ := pg.ParseURL(os.Getenv("DATABASE_URL"))
-	// options.TLSConfig.ServerName = "ec2-54-163-234-4.compute-1.amazonaws.com"
+
 	options.TLSConfig.InsecureSkipVerify = true
 	pgsqlDB = pg.Connect(options)
 	defer pgsqlDB.Close()
+
 	// --- Postgresql Server Connection --- //
 
 	// --- Tile38 Server Connection --- //
@@ -84,11 +85,12 @@ func main() {
 
 	index := routes.IndexDBClient{DB: pgsqlDB, Client: redisClient}
 	r.HandleFunc("/users", index.GetUsers).Methods("GET")
+	r.HandleFunc("/users/{page:[0-9]+}/{per_page:[0-9]+}", index.GetUsersPaginated).Methods("GET")
 
 	r.Use(m.JSON)
 
 	srv := &http.Server{
-		Addr: ":" + os.Getenv("PORT"),
+		Addr: h.GetEnvValue("HTTP_SERVER_ADDRESS"),
 		// Good practice to set timeouts to avoid Slowloris attacks.
 		WriteTimeout: time.Second * 30,
 		ReadTimeout:  time.Second * 30,

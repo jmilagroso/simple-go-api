@@ -11,6 +11,7 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/gorilla/mux"
 	"quadx.xyz/jmilagroso/goberks/blueprints"
 	h "quadx.xyz/jmilagroso/goberks/helpers"
 )
@@ -40,14 +41,29 @@ func GetIndex(w http.ResponseWriter, r *http.Request) {
 	h.Error(json.NewEncoder(w).Encode(Index{ServerTime: time.Now().String(), GoVersion: runtime.Version()}))
 }
 
-// GetIndex - Get index route
+// GetUsers - Get users route
 func (dbClient *IndexDBClient) GetUsers(w http.ResponseWriter, r *http.Request) {
+	// Output
+	var rows []User
+
+	dbClient.Query(&rows, `SELECT id, username, email FROM users ORDER BY id DESC`)
+
+	h.Error(json.NewEncoder(w).Encode(rows))
+}
+
+// GetUsersPaginated - Get index paginated route
+func (dbClient *IndexDBClient) GetUsersPaginated(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+
+	page := h.StrToInt(vars["page"])
+	perPage := h.StrToInt(vars["per_page"])
+	offset := (page - 1) * perPage
 
 	// Output
 	var rows []User
 
-	_, dbErr := dbClient.Query(&rows, `SELECT id, username, email FROM users ORDER BY id DESC`)
-	h.Error(dbErr)
+	dbClient.Query(&rows, `SELECT id, username, email FROM users ORDER BY id DESC LIMIT ? OFFSET ?`, perPage, offset)
 
 	h.Error(json.NewEncoder(w).Encode(rows))
 }
