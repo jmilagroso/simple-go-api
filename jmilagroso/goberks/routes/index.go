@@ -17,14 +17,14 @@ import (
 )
 
 type Index struct {
-	ServerTime string
-	GoVersion  string
+	ServerTime string `json:"server_time"`
+	GoVersion  string `json:"server_time"`
 }
 
 type User struct {
-	Id       string
-	Username string
-	Email    string
+	Id       string `json:"id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
 }
 
 // IndexDBClient db client(s) local type
