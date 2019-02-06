@@ -18,7 +18,7 @@ import (
 
 type Index struct {
 	ServerTime string `json:"server_time"`
-	GoVersion  string `json:"server_time"`
+	GoVersion  string `json:"go_version"`
 }
 
 type User struct {
