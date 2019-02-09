@@ -1,8 +1,8 @@
 {
 	"Issues": [],
 	"Stats": {
-		"files": 16,
-		"lines": 545,
+		"files": 13,
+		"lines": 387,
 		"nosec": 0,
 		"found": 0
 	}

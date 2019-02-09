@@ -30,7 +30,8 @@ var pgsqlDB *pg.DB
 var dbClient models.DBClient
 
 func main() {
-	options, _ := pg.ParseURL(os.Getenv("DATABASE_URL"))
+	options, err := pg.ParseURL(os.Getenv("DATABASE_URL"))
+	h.Error(err)
 
 	options.TLSConfig.InsecureSkipVerify = true
 	pgsqlDB = pg.Connect(options)
@@ -51,7 +52,9 @@ func main() {
 
 	// Users endpoints.
 	index := routes.IndexDBClient{DB: pgsqlDB}
+	r.HandleFunc("/user", index.NewUser).Methods("POST")
 	r.HandleFunc("/users", index.GetUsers).Methods("GET")
+	r.HandleFunc("/users/{id:[0-9]+}", index.GetUser).Methods("GET")
 	r.HandleFunc("/users/{page:[0-9]+}/{per_page:[0-9]+}", index.GetUsersPaginated).Methods("GET")
 
 	r.Use(m.JSON)
