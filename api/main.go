@@ -19,14 +19,12 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jmilagroso/api/routes"
-	redis "gopkg.in/redis.v5"
 
 	"github.com/go-pg/pg"
 
 	m "github.com/jmilagroso/api/middlewares"
 )
 
-var redisClient *redis.Client
 var pgsqlDB *pg.DB
 
 var dbClient models.DBClient
@@ -52,15 +50,14 @@ func main() {
 	r.HandleFunc("/", routes.GetIndex).Methods("GET")
 
 	// Users endpoints.
-	index := routes.IndexDBClient{DB: pgsqlDB, Client: redisClient}
+	index := routes.IndexDBClient{DB: pgsqlDB}
 	r.HandleFunc("/users", index.GetUsers).Methods("GET")
 	r.HandleFunc("/users/{page:[0-9]+}/{per_page:[0-9]+}", index.GetUsersPaginated).Methods("GET")
 
 	r.Use(m.JSON)
 
 	srv := &http.Server{
-		//Addr: ":" + os.Getenv("PORT"),
-		Addr: h.GetEnvValue("HTTP_SERVER_ADDRESS"),
+		Addr: ":" + os.Getenv("PORT"),
 		// Good practice to set timeouts to avoid Slowloris attacks.
 		WriteTimeout: time.Second * 30,
 		ReadTimeout:  time.Second * 30,
