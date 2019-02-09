@@ -1,6 +1,6 @@
 // main.go
 // Main application
-// Jay Milagroso <jmilagroso@quadx.xyz> / Jan 24 2019
+// Jay Milagroso <jmilagroso@gmail.com> / Jan 24 2019
 
 package main
 
@@ -13,23 +13,23 @@ import (
 	"os/signal"
 	"time"
 
-	"quadx.xyz/jmilagroso/goberks/blueprints"
+	"github.com/jmilagroso/api/models"
 
-	h "quadx.xyz/jmilagroso/goberks/helpers"
+	h "github.com/jmilagroso/api/helpers"
 
 	"github.com/gorilla/mux"
+	"github.com/jmilagroso/api/routes"
 	redis "gopkg.in/redis.v5"
-	"quadx.xyz/jmilagroso/goberks/routes"
 
 	"github.com/go-pg/pg"
 
-	m "quadx.xyz/jmilagroso/goberks/middlewares"
+	m "github.com/jmilagroso/api/middlewares"
 )
 
 var redisClient *redis.Client
 var pgsqlDB *pg.DB
 
-var dbClient blueprints.DBClient
+var dbClient models.DBClient
 
 func main() {
 	options, _ := pg.ParseURL(os.Getenv("DATABASE_URL"))
@@ -40,17 +40,6 @@ func main() {
 
 	// --- Postgresql Server Connection --- //
 
-	// --- Tile38 Server Connection --- //
-	// redisClient = redis.NewClient(&redis.Options{
-	// 	Addr: h.GetEnvValue("TILE38_ADDRESS"),
-	// })
-
-	// // Set json output logging
-	// h.Error(redisClient.Process(redis.NewStringCmd("OUTPUT", "json")))
-
-	// defer redisClient.Close()
-	// --- Tile38 Server Connection --- //
-
 	var wait time.Duration
 	flag.DurationVar(&wait, "graceful-timeout", time.Second*30,
 		"the duration for which the server gracefully "+
@@ -59,30 +48,10 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// @TODO Create Pub/Sub version of current impl.
-
-	// // --- Rider Endpoint --- //
-	// rider := routes.RiderDBClient{DB: pgsqlDB, Client: redisClient}
-	// // Sends rider's coordinates
-	// r.HandleFunc("/rider/coordinates", rider.PublishRiderCoordinates).Methods("POST")
-	// // Gets rider's coordinates
-	// r.HandleFunc("/rider/coordinates/{id}/{channel}", rider.GetRiderCoordinates).Methods("GET")
-	// // --- Rider Endpoint --- //
-
-	// // --- Destination Endpoint --- //
-	// destination := routes.DestinationDBClient{DB: pgsqlDB, Client: redisClient}
-	// // Sends destination's coordinates
-	// r.HandleFunc("/destination/coordinates", destination.PublishDestinationCoordinates).Methods("POST")
-	// // Gets destination's coordinates
-	// r.HandleFunc("/destination/coordinates/{id}/{channel}", destination.GetDestinationCoordinates).Methods("GET")
-	// // --- Destination Endpoint --- //
-
-	// // Webhook notifier
-	// r.HandleFunc("/notify", routes.Notify).Methods("POST")
-
-	// Webhook notifier
+	// Default
 	r.HandleFunc("/", routes.GetIndex).Methods("GET")
 
+	// Users endpoints.
 	index := routes.IndexDBClient{DB: pgsqlDB, Client: redisClient}
 	r.HandleFunc("/users", index.GetUsers).Methods("GET")
 	r.HandleFunc("/users/{page:[0-9]+}/{per_page:[0-9]+}", index.GetUsersPaginated).Methods("GET")
@@ -90,7 +59,8 @@ func main() {
 	r.Use(m.JSON)
 
 	srv := &http.Server{
-		Addr: ":" + os.Getenv("PORT"),
+		//Addr: ":" + os.Getenv("PORT"),
+		Addr: h.GetEnvValue("HTTP_SERVER_ADDRESS"),
 		// Good practice to set timeouts to avoid Slowloris attacks.
 		WriteTimeout: time.Second * 30,
 		ReadTimeout:  time.Second * 30,

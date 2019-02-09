@@ -1,6 +1,6 @@
 // sms.go
 // Sms method
-// Jay Milagroso <jmilagroso@quadx.xyz> / Jan 28 2019
+// Jay Milagroso <jmilagroso@gmail.com> / Jan 28 2019
 
 package services
 

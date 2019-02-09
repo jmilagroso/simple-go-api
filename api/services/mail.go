@@ -1,6 +1,6 @@
 // mail.go
 // Mail method
-// Jay Milagroso <jmilagroso@quadx.xyz> / Jan 24 2019
+// Jay Milagroso <jmilagroso@gmail.com> / Jan 24 2019
 
 package services
 
@@ -9,7 +9,7 @@ import (
 
 	sendgrid "github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
-	h "quadx.xyz/jmilagroso/goberks/helpers"
+	h "github.com/jmilagroso/api/helpers"
 )
 
 func Mail(params map[string]string) {
