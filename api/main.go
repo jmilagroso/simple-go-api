@@ -1,6 +1,4 @@
 // main.go
-// Main application
-// Jay Milagroso <jmilagroso@gmail.com> / Jan 24 2019
 
 package main
 
@@ -30,13 +28,13 @@ var pgsqlDB *pg.DB
 var dbClient models.DBClient
 
 func main() {
+	// --- Postgresql Server Connection --- //
 	options, err := pg.ParseURL(os.Getenv("DATABASE_URL"))
 	h.Error(err)
 
 	options.TLSConfig.InsecureSkipVerify = true
 	pgsqlDB = pg.Connect(options)
 	defer pgsqlDB.Close()
-
 	// --- Postgresql Server Connection --- //
 
 	var wait time.Duration

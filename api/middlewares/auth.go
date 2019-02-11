@@ -11,6 +11,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		w.Header().Set("Content-Type", "application/json")
 
+		// @TODO Add JWT validation
 		if token == "123" {
 			// We found the token in our map
 			log.Printf("Authenticated")

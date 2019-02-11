@@ -1,17 +1,16 @@
 // mail.go
-// Mail method
-// Jay Milagroso <jmilagroso@gmail.com> / Jan 24 2019
 
 package services
 
 import (
 	"os"
 
+	h "github.com/jmilagroso/api/helpers"
 	sendgrid "github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
-	h "github.com/jmilagroso/api/helpers"
 )
 
+// Mail sends email
 func Mail(params map[string]string) {
 	from := mail.NewEmail(params["from_name"], params["from_email"])
 	subject := params["subject"]
