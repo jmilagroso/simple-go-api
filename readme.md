@@ -40,6 +40,11 @@ $ cd github.com/jmilagroso
 $ go install ./...
 $ api
 
+OR
+
+$ heroku local -f Procfile
+```
+
 ## Usage
 ```sh
 # Authenticate/Generate request token
@@ -59,7 +64,7 @@ curl -X POST \
 
 
 ```sh
-# List Users Paginated 
+# List Users Paginated (Token required)
 curl -X GET \
   https://jaymilagroso-goapi.herokuapp.com/users/1/5 \
   -H 'X-Token: <token>' \
@@ -95,7 +100,7 @@ curl -X GET \
 ]
 
 ```sh
-# Creates new User record
+# Creates new User record (Token not required)
 curl -X POST \
   http://jaymilagroso-goapi.herokuapp.com/user \
   -H 'cache-control: no-cache' \
@@ -110,3 +115,13 @@ curl -X POST \
     "email": "johndoe2019@gmail.com"
 }
 ```
+
+## References
+- https://devcenter.heroku.com/articles/getting-started-with-go
+
+
+## License
+This code is distributed using the Apache license, Version 2.0.
+
+### Author
+Jay Milagroso <j.milagroso@gmail.com>
