@@ -118,6 +118,21 @@ curl -X POST \
 }
 ```
 
+```sh
+# Get user by id (Token required)
+curl -X GET \
+  https://jaymilagroso-goapi.herokuapp.com/users/<user_id> \
+  -H 'X-Token: <token>' \
+  -H 'cache-control: no-cache'
+
+# Output
+{
+    "id": "9999",
+    "username": "johndoe9996",
+    "email": "jonhdoe@3125da62ec6df8727faee392248875f7@gmail.com"
+}
+```
+
 ## References
 - https://devcenter.heroku.com/articles/getting-started-with-go
 
