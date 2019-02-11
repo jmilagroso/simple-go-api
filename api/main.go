@@ -45,17 +45,26 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// Default
-	r.HandleFunc("/", routes.GetIndex).Methods("GET")
+	r.Use(m.JSONMiddleware)
+
+	r.Handle("/", m.AuthMiddleware(http.HandlerFunc(routes.GetIndex))).Methods("GET")
 
 	// Users endpoints.
 	index := routes.IndexDBClient{DB: pgsqlDB}
 	r.HandleFunc("/user", index.NewUser).Methods("POST")
-	r.HandleFunc("/users", index.GetUsers).Methods("GET")
-	r.HandleFunc("/users/{id:[0-9]+}", index.GetUser).Methods("GET")
-	r.HandleFunc("/users/{page:[0-9]+}/{per_page:[0-9]+}", index.GetUsersPaginated).Methods("GET")
 
-	r.Use(m.JSON)
+	r.Handle("/users", m.AuthMiddleware(http.HandlerFunc(index.GetUsers))).Methods("GET")
+
+	r.Handle("/users/{id:[0-9]+}", m.AuthMiddleware(http.HandlerFunc(index.GetUser))).Methods("GET")
+
+	r.Handle("/users/{page:[0-9]+}/{per_page:[0-9]+}",
+		m.AuthMiddleware(
+			http.HandlerFunc(
+				index.GetUsersPaginated))).
+		Methods("GET")
+
+	auth := routes.AuthDBClient{DB: pgsqlDB}
+	r.HandleFunc("/auth", auth.Auth).Methods("POST")
 
 	srv := &http.Server{
 		Addr: ":" + os.Getenv("PORT"),

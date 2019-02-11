@@ -1,19 +1,9 @@
 {
-	"Issues": [
-		{
-			"severity": "LOW",
-			"confidence": "HIGH",
-			"rule_id": "G104",
-			"details": "Errors unhandled.",
-			"file": "/home/jay/work/src/github.com/jmilagroso/api/routes/index.go",
-			"code": "password.Write(([]byte(r.FormValue(\"password\"))))",
-			"line": "91"
-		}
-	],
+	"Issues": [],
 	"Stats": {
-		"files": 13,
-		"lines": 385,
+		"files": 18,
+		"lines": 592,
 		"nosec": 0,
-		"found": 1
+		"found": 0
 	}
 }

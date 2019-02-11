@@ -1,8 +1,6 @@
 package routes
 
 import (
-	"crypto/sha256"
-	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"runtime"
@@ -87,8 +85,7 @@ func (dbClient *IndexDBClient) NewUser(w http.ResponseWriter, r *http.Request) {
 
 	username := r.FormValue("username")
 	email := r.FormValue("email")
-	password := sha256.New()
-	password.Write(([]byte(r.FormValue("password"))))
+	password := h.Hash256(r.FormValue("password"))
 
 	// @TODO Inject Caching using Heroku Redis (Needs account upgrade)
 	// @TODO Cache page_per_page = 1_10
@@ -100,7 +97,7 @@ func (dbClient *IndexDBClient) NewUser(w http.ResponseWriter, r *http.Request) {
 	exists, errExists := dbClient.Model(&users).Where("username = ?", username).WhereOr("email = ?", email).Exists()
 	h.Error(errExists)
 
-	newUser := m.User{Username: username, Email: email, Password: base64.URLEncoding.EncodeToString(password.Sum(nil))}
+	newUser := m.User{Username: username, Email: email, Password: password}
 	if !exists {
 
 		errInsert := dbClient.Insert(&newUser)
