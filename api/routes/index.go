@@ -9,14 +9,33 @@ import (
 	"github.com/gorilla/mux"
 	h "github.com/jmilagroso/api/helpers"
 	m "github.com/jmilagroso/api/models"
+	"github.com/vmihailenco/msgpack"
+	"gopkg.in/redis.v5"
 )
 
 // IndexDBClient db client(s) local type
 type IndexDBClient m.DBClient
 
 // GetIndex - Get index route
-func GetIndex(w http.ResponseWriter, r *http.Request) {
-	h.Error(json.NewEncoder(w).Encode(m.Index{ServerTime: time.Now().String(), GoVersion: runtime.Version()}))
+func (dbClient *IndexDBClient) GetIndex(w http.ResponseWriter, r *http.Request) {
+	key := "index"
+	val, err := dbClient.Get(key).Result()
+
+	var item m.Index
+
+	if err == redis.Nil {
+		item = m.Index{ServerTime: time.Now().String(), GoVersion: runtime.Version()}
+		binary, err := msgpack.Marshal(&item)
+		h.Error(err)
+		dbClient.Set(key, binary, 60*time.Second)
+	} else if err != nil {
+		h.Error(err)
+	} else {
+		err = msgpack.Unmarshal([]byte(val), &item)
+		h.Error(err)
+	}
+
+	h.Error(json.NewEncoder(w).Encode(item))
 }
 
 // GetUsers - Get users
