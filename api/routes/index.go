@@ -102,7 +102,10 @@ func (dbClient *IndexDBClient) NewUser(w http.ResponseWriter, r *http.Request) {
 
 		errInsert := dbClient.Insert(&newUser)
 		h.Error(errInsert)
+
+		h.Error(json.NewEncoder(w).Encode(newUser))
+	} else {
+		h.Error(json.NewEncoder(w).Encode(m.ErrorResponse{Message: "Username/email already exists", Status: 200}))
 	}
 
-	h.Error(json.NewEncoder(w).Encode(newUser))
 }

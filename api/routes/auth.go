@@ -26,5 +26,10 @@ func (authDBClient *AuthDBClient) Auth(w http.ResponseWriter, r *http.Request) {
 		Query(&u, `SELECT id FROM users WHERE username = ? AND password = ?`, username, password)
 	h.Error(err)
 
-	h.Error(json.NewEncoder(w).Encode(authBackend.GenerateToken(u.ID)))
+	if u.ID != "" {
+		h.Error(json.NewEncoder(w).Encode(authBackend.GenerateToken(u.ID)))
+	} else {
+		h.Error(json.NewEncoder(w).Encode(m.ErrorResponse{Message: "Username/password is invalid", Status: 200}))
+	}
+
 }
