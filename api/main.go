@@ -50,17 +50,17 @@ func main() {
 	r.Handle("/", m.AuthMiddleware(http.HandlerFunc(routes.GetIndex))).Methods("GET")
 
 	// Users endpoints.
-	index := routes.IndexDBClient{DB: pgsqlDB}
-	r.HandleFunc("/user", index.NewUser).Methods("POST")
+	users := routes.IndexDBClient{DB: pgsqlDB}
+	r.HandleFunc("/user", users.NewUser).Methods("POST")
 
-	r.Handle("/users", m.AuthMiddleware(http.HandlerFunc(index.GetUsers))).Methods("GET")
+	r.Handle("/users", m.AuthMiddleware(http.HandlerFunc(users.GetUsers))).Methods("GET")
 
-	r.Handle("/users/{id:[0-9]+}", m.AuthMiddleware(http.HandlerFunc(index.GetUser))).Methods("GET")
+	r.Handle("/users/{id:[0-9]+}", m.AuthMiddleware(http.HandlerFunc(users.GetUser))).Methods("GET")
 
 	r.Handle("/users/{page:[0-9]+}/{per_page:[0-9]+}",
 		m.AuthMiddleware(
 			http.HandlerFunc(
-				index.GetUsersPaginated))).
+				users.GetUsersPaginated))).
 		Methods("GET")
 
 	auth := routes.AuthDBClient{DB: pgsqlDB}

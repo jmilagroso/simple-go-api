@@ -6,6 +6,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	c "github.com/jmilagroso/api/core"
+	h "github.com/jmilagroso/api/helpers"
 )
 
 // ErrorResponse error response
@@ -33,20 +34,20 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 				if ve, ok := err.(*jwt.ValidationError); ok {
 					if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-						json.NewEncoder(w).Encode(ErrorResponse{Message: "Malformed", Status: 400})
+						h.Error(json.NewEncoder(w).Encode(ErrorResponse{Message: "Malformed", Status: 400}))
 					} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
-						json.NewEncoder(w).Encode(ErrorResponse{
+						h.Error(json.NewEncoder(w).Encode(ErrorResponse{
 							Message: "Token has expired or not active yet",
-							Status:  400})
+							Status:  400}))
 					} else {
-						json.NewEncoder(w).Encode(ErrorResponse{Message: "Couldn't handle token", Status: 400})
+						h.Error(json.NewEncoder(w).Encode(ErrorResponse{Message: "Couldn't handle token", Status: 400}))
 					}
 				} else {
-					json.NewEncoder(w).Encode(ErrorResponse{Message: "Couldn't handle token", Status: 400})
+					h.Error(json.NewEncoder(w).Encode(ErrorResponse{Message: "Couldn't handle token", Status: 400}))
 				}
 			}
 		} else {
-			json.NewEncoder(w).Encode(ErrorResponse{Message: "Forbidden", Status: 403})
+			h.Error(json.NewEncoder(w).Encode(ErrorResponse{Message: "Forbidden", Status: 403}))
 		}
 	})
 }
