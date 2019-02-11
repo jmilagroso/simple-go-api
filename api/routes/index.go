@@ -77,7 +77,12 @@ func (dbClient *IndexDBClient) GetUser(w http.ResponseWriter, r *http.Request) {
 	_, err := dbClient.Query(&user, `SELECT id, username, email FROM users WHERE id = ?`, id)
 	h.Error(err)
 
-	h.Error(json.NewEncoder(w).Encode(user))
+	if user.ID != "" {
+		h.Error(json.NewEncoder(w).Encode(user))
+	} else {
+		h.Error(json.NewEncoder(w).Encode(m.ErrorResponse{Message: "ID record not found.", Status: 200}))
+	}
+
 }
 
 // NewUser - New user
