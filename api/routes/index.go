@@ -6,11 +6,11 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	h "github.com/jmilagroso/api/helpers"
 	m "github.com/jmilagroso/api/models"
 	"github.com/vmihailenco/msgpack"
-	"gopkg.in/redis.v5"
 )
 
 // IndexDBClient db client(s) local type
@@ -19,16 +19,17 @@ type IndexDBClient m.DBClient
 // GetIndex - Get index route
 func (dbClient *IndexDBClient) GetIndex(w http.ResponseWriter, r *http.Request) {
 	key := "index"
-	val, err := dbClient.Get(key).Result()
+
+	val, err := redis.Bytes(dbClient.Conn.Do("GET", key))
 	h.Error(err)
 
 	var item m.Index
 
-	if err == redis.Nil {
+	if val == nil {
 		item = m.Index{ServerTime: time.Now().String(), GoVersion: runtime.Version()}
 		binary, err := msgpack.Marshal(&item)
 		h.Error(err)
-		dbClient.Set(key, binary, 60*time.Second)
+		dbClient.Conn.Do("SETEX", key, binary, 60*time.Second)
 	} else if err != nil {
 		h.Error(err)
 	} else {

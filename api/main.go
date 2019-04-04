@@ -19,13 +19,13 @@ import (
 	"github.com/jmilagroso/api/routes"
 
 	"github.com/go-pg/pg"
-	"github.com/go-redis/redis"
+	"github.com/gomodule/redigo/redis"
 
 	m "github.com/jmilagroso/api/middlewares"
 )
 
 var pgsqlDB *pg.DB
-var redisClient *redis.Client
+var redisConn *redis.Conn
 
 var dbClient models.DBClient
 
@@ -40,13 +40,9 @@ func main() {
 	// --- Postgresql Server Connection --- //
 
 	// --- Redis Server Connection --- //
-
-	redisClient := redis.NewClient(&redis.Options{
-		Addr:     "ec2-18-232-45-80.compute-1.amazonaws.com:28109",
-		Password: "p1f2119e702dbec26f60b87fc08f319a39b7239e728e6c011d84f69f4f9bbc41c",
-		DB:       0, // use default DB
-	})
-	defer redisClient.Close()
+	redisConn, err := redis.DialURL(os.Getenv("REDIS_URL"))
+	h.Error(err)
+	defer redisConn.Close()
 	// --- Redis Server Connection --- //
 
 	var wait time.Duration
@@ -62,7 +58,7 @@ func main() {
 	//r.Handle("/", m.AuthMiddleware(http.HandlerFunc(routes.GetIndex))).Methods("GET")
 
 	// Users endpoints.
-	users := routes.IndexDBClient{DB: pgsqlDB, Client: redisClient}
+	users := routes.IndexDBClient{DB: pgsqlDB, Conn: redisConn}
 	r.HandleFunc("/", users.GetIndex).Methods("GET")
 	r.HandleFunc("/user", users.NewUser).Methods("POST")
 
@@ -76,7 +72,7 @@ func main() {
 				users.GetUsersPaginated))).
 		Methods("GET")
 
-	auth := routes.AuthDBClient{DB: pgsqlDB, Client: redisClient}
+	auth := routes.AuthDBClient{DB: pgsqlDB, Conn: redisConn}
 	r.HandleFunc("/auth", auth.Auth).Methods("POST")
 
 	srv := &http.Server{

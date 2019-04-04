@@ -2,11 +2,11 @@ package models
 
 import (
 	"github.com/go-pg/pg"
-	"github.com/go-redis/redis"
+	"github.com/gomodule/redigo/redis"
 )
 
 // DBClient struct
 type DBClient struct {
 	*pg.DB
-	*redis.Client
+	redis.Conn
 }
