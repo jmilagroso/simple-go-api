@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gomodule/redigo/redis"
@@ -24,18 +23,18 @@ func (dbClient *IndexDBClient) GetIndex(w http.ResponseWriter, r *http.Request) 
 	var item m.Index
 
 	if val == nil {
-		fmt.Println("nil")
+		item = m.Index{ServerTime: "nil", GoVersion: "nil"}
 		//item = m.Index{ServerTime: time.Now().String(), GoVersion: runtime.Version()}
 		//binary, err := msgpack.Marshal(&item)
 		//h.Error(err)
 		//dbClient.Conn.Do("SETEX", key, binary, 60*time.Second)
 	} else if err != nil {
 		//h.Error(err)
-		fmt.Println("error1")
+		item = m.Index{ServerTime: "err1", GoVersion: "err1"}
 	} else {
 		//err = msgpack.Unmarshal([]byte(val), &item)
 		//h.Error(err)
-		fmt.Println("error2")
+		item = m.Index{ServerTime: "err1", GoVersion: "err1"}
 	}
 
 	h.Error(json.NewEncoder(w).Encode(item))
