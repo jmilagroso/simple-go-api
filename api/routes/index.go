@@ -20,6 +20,7 @@ type IndexDBClient m.DBClient
 func (dbClient *IndexDBClient) GetIndex(w http.ResponseWriter, r *http.Request) {
 	key := "index"
 	val, err := dbClient.Get(key).Result()
+	h.Error(err)
 
 	var item m.Index
 
