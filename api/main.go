@@ -57,10 +57,11 @@ func main() {
 
 	r.Use(m.JSONMiddleware)
 
-	r.Handle("/", m.AuthMiddleware(http.HandlerFunc(routes.GetIndex))).Methods("GET")
+	//r.Handle("/", m.AuthMiddleware(http.HandlerFunc(routes.GetIndex))).Methods("GET")
 
 	// Users endpoints.
 	users := routes.IndexDBClient{DB: pgsqlDB, Client: redisClient}
+	r.HandleFunc("/", users.GetIndex).Methods("GET")
 	r.HandleFunc("/user", users.NewUser).Methods("POST")
 
 	r.Handle("/users", m.AuthMiddleware(http.HandlerFunc(users.GetUsers))).Methods("GET")
