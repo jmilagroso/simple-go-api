@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
@@ -17,7 +18,13 @@ type IndexDBClient m.DBClient
 func (dbClient *IndexDBClient) GetIndex(w http.ResponseWriter, r *http.Request) {
 	key := "index"
 
-	val, err := redis.Bytes(dbClient.Conn.Do("GET", key))
+	// --- Redis Server Connection --- //
+	redisConn, err := redis.DialURL(os.Getenv("REDIS_URL"))
+	h.Error(err)
+	defer redisConn.Close()
+	// --- Redis Server Connection --- //
+
+	val, err := redis.Bytes(redisConn.Do("GET", key))
 	h.Error(err)
 
 	var item m.Index
@@ -34,7 +41,7 @@ func (dbClient *IndexDBClient) GetIndex(w http.ResponseWriter, r *http.Request) 
 	} else {
 		//err = msgpack.Unmarshal([]byte(val), &item)
 		//h.Error(err)
-		item = m.Index{ServerTime: "err1", GoVersion: "err1"}
+		item = m.Index{ServerTime: "err2", GoVersion: "err2"}
 	}
 
 	h.Error(json.NewEncoder(w).Encode(item))

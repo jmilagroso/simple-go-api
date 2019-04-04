@@ -39,12 +39,6 @@ func main() {
 	defer pgsqlDB.Close()
 	// --- Postgresql Server Connection --- //
 
-	// --- Redis Server Connection --- //
-	redisConn, err := redis.DialURL(os.Getenv("REDIS_URL"))
-	h.Error(err)
-	defer redisConn.Close()
-	// --- Redis Server Connection --- //
-
 	var wait time.Duration
 	flag.DurationVar(&wait, "graceful-timeout", time.Second*30,
 		"the duration for which the server gracefully "+
@@ -58,7 +52,7 @@ func main() {
 	//r.Handle("/", m.AuthMiddleware(http.HandlerFunc(routes.GetIndex))).Methods("GET")
 
 	// Users endpoints.
-	users := routes.IndexDBClient{DB: pgsqlDB, Conn: redisConn}
+	users := routes.IndexDBClient{DB: pgsqlDB}
 	r.HandleFunc("/", users.GetIndex).Methods("GET")
 	r.HandleFunc("/user", users.NewUser).Methods("POST")
 
@@ -72,7 +66,7 @@ func main() {
 				users.GetUsersPaginated))).
 		Methods("GET")
 
-	auth := routes.AuthDBClient{DB: pgsqlDB, Conn: redisConn}
+	auth := routes.AuthDBClient{DB: pgsqlDB}
 	r.HandleFunc("/auth", auth.Auth).Methods("POST")
 
 	srv := &http.Server{
