@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
@@ -15,6 +16,8 @@ var authBackend = c.InitJWTAuthenticationBackend()
 // AuthMiddleware auth middleware
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		log.Println(r.RequestURI)
 
 		paramToken := r.Header.Get("X-Token")
 

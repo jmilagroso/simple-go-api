@@ -29,8 +29,6 @@ var redisClient *redis.Client
 
 var dbClient models.DBClient
 
-var indexDBClient routes.IndexDBClient
-
 func main() {
 	// --- Postgresql Server Connection --- //
 	options, err := pg.ParseURL(os.Getenv("DATABASE_URL"))
@@ -59,8 +57,7 @@ func main() {
 
 	r.Use(m.JSONMiddleware)
 
-	//r.Handle("/", m.AuthMiddleware(http.HandlerFunc(routes.GetIndex))).Methods("GET")
-	r.Handle("/", http.HandlerFunc(indexDBClient.GetIndex)).Methods("GET")
+	r.Handle("/", m.AuthMiddleware(http.HandlerFunc(routes.GetIndex))).Methods("GET")
 
 	// Users endpoints.
 	users := routes.IndexDBClient{DB: pgsqlDB, Client: redisClient}
