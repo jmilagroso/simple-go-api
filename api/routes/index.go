@@ -2,15 +2,13 @@ package routes
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
-	"runtime"
-	"time"
 
 	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	h "github.com/jmilagroso/api/helpers"
 	m "github.com/jmilagroso/api/models"
-	"github.com/vmihailenco/msgpack"
 )
 
 // IndexDBClient db client(s) local type
@@ -26,15 +24,18 @@ func (dbClient *IndexDBClient) GetIndex(w http.ResponseWriter, r *http.Request) 
 	var item m.Index
 
 	if val == nil {
-		item = m.Index{ServerTime: time.Now().String(), GoVersion: runtime.Version()}
-		binary, err := msgpack.Marshal(&item)
-		h.Error(err)
-		dbClient.Conn.Do("SETEX", key, binary, 60*time.Second)
+		fmt.Println("nil")
+		//item = m.Index{ServerTime: time.Now().String(), GoVersion: runtime.Version()}
+		//binary, err := msgpack.Marshal(&item)
+		//h.Error(err)
+		//dbClient.Conn.Do("SETEX", key, binary, 60*time.Second)
 	} else if err != nil {
-		h.Error(err)
+		//h.Error(err)
+		fmt.Println("error1")
 	} else {
-		err = msgpack.Unmarshal([]byte(val), &item)
-		h.Error(err)
+		//err = msgpack.Unmarshal([]byte(val), &item)
+		//h.Error(err)
+		fmt.Println("error2")
 	}
 
 	h.Error(json.NewEncoder(w).Encode(item))
