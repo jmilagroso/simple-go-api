@@ -69,6 +69,48 @@
 			"revisionTime": "2019-01-31T13:02:37Z"
 		},
 		{
+			"checksumSHA1": "UZkSbR0Qv0uATXXR5RXRUcSwYwc=",
+			"path": "github.com/go-redis/redis",
+			"revision": "a679e614427ac801aafbf444481210440c8a2694",
+			"revisionTime": "2019-03-25T11:21:10Z"
+		},
+		{
+			"checksumSHA1": "tZJRl4B7hKoRe+nWAMA4JtsM7Kc=",
+			"path": "github.com/go-redis/redis/internal",
+			"revision": "a679e614427ac801aafbf444481210440c8a2694",
+			"revisionTime": "2019-03-25T11:21:10Z"
+		},
+		{
+			"checksumSHA1": "GQZsUVg/+6UpQAYpc4luMvMutSI=",
+			"path": "github.com/go-redis/redis/internal/consistenthash",
+			"revision": "a679e614427ac801aafbf444481210440c8a2694",
+			"revisionTime": "2019-03-25T11:21:10Z"
+		},
+		{
+			"checksumSHA1": "l66eTZiJqueypc56HXCakGDm784=",
+			"path": "github.com/go-redis/redis/internal/hashtag",
+			"revision": "a679e614427ac801aafbf444481210440c8a2694",
+			"revisionTime": "2019-03-25T11:21:10Z"
+		},
+		{
+			"checksumSHA1": "25ynuVWFdZZBPIPldXs9zshCxm0=",
+			"path": "github.com/go-redis/redis/internal/pool",
+			"revision": "a679e614427ac801aafbf444481210440c8a2694",
+			"revisionTime": "2019-03-25T11:21:10Z"
+		},
+		{
+			"checksumSHA1": "zCo0t+gRBbctwyIpkDLrqRFtXew=",
+			"path": "github.com/go-redis/redis/internal/proto",
+			"revision": "a679e614427ac801aafbf444481210440c8a2694",
+			"revisionTime": "2019-03-25T11:21:10Z"
+		},
+		{
+			"checksumSHA1": "1PH2NoAB/u3IZmLYyCrIbOzqLZ4=",
+			"path": "github.com/go-redis/redis/internal/util",
+			"revision": "a679e614427ac801aafbf444481210440c8a2694",
+			"revisionTime": "2019-03-25T11:21:10Z"
+		},
+		{
 			"checksumSHA1": "H8wo+NR5z+VRl0wqPYpVQfC06ks=",
 			"path": "github.com/go-stack/stack",
 			"revision": "2fee6af1a9795aafbe0253a0cfbdf668e1fb8a9a",
@@ -169,6 +211,18 @@
 			"path": "github.com/ttacon/libphonenumber",
 			"revision": "23ddf903e8f8800d2857645eb155ffbe15cd02ee",
 			"revisionTime": "2019-01-08T14:51:53Z"
+		},
+		{
+			"checksumSHA1": "zdNa3P/43/BjQomu+zdwbA7TdRM=",
+			"path": "github.com/vmihailenco/msgpack",
+			"revision": "c2fc210f30a2aca9db880cc017a92c169c999253",
+			"revisionTime": "2019-03-27T14:08:13Z"
+		},
+		{
+			"checksumSHA1": "MVWKvLSnWudQLxdP/bPhgjRL2yE=",
+			"path": "github.com/vmihailenco/msgpack/codes",
+			"revision": "c2fc210f30a2aca9db880cc017a92c169c999253",
+			"revisionTime": "2019-03-27T14:08:13Z"
 		},
 		{
 			"checksumSHA1": "1MGpGDQqnUoRpv7VEcQrXOBydXE=",
