@@ -15,6 +15,7 @@ Simple Go API uses a number of open source projects to work properly:
 * [Heroku Posgresql](https://www.heroku.com/postgres) - Managed SQL Database as a Service for all developers.
 * [go-pg](https://github.com/go-pg/pg) - Golang ORM with focus on PostgreSQL features and performance.
 * [JWT](https://jwt.io/) - JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.
+* [redigo](https://github.com/gomodule/redigo) - Redigo is a Go client for the Redis database.
 
 ## Check Security Issues using GoSpec
 ```sh
