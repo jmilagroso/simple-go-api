@@ -123,6 +123,12 @@
 			"revisionTime": "2019-01-09T07:22:47Z"
 		},
 		{
+			"checksumSHA1": "29SMun24tC5a7pMCmb9Ay8RP1ic=",
+			"path": "github.com/gomodule/redigo/redis",
+			"revision": "39e2c31b7ca38b521ceb836620a269e62c895dc9",
+			"revisionTime": "2019-03-22T06:41:13Z"
+		},
+		{
 			"checksumSHA1": "yGnECJsPZBlk5khJmLUP8thNNxM=",
 			"path": "github.com/gorilla/mux",
 			"revision": "a7962380ca08b5a188038c69871b8d3fbdf31e89",
