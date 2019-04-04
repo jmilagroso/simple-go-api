@@ -7,8 +7,10 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
+	"strings"
 	"time"
 
 	"github.com/jmilagroso/api/models"
@@ -40,9 +42,17 @@ func main() {
 	// --- Postgresql Server Connection --- //
 
 	// --- Redis Server Connection --- //
+	var resolvedURL = os.Getenv("REDIS_URL")
+	var password = ""
+	if !strings.Contains(resolvedURL, "localhost") {
+		parsedURL, _ := url.Parse(resolvedURL)
+		password, _ = parsedURL.User.Password()
+		resolvedURL = parsedURL.Host
+	}
 	redisClient := redis.NewClient(&redis.Options{
-		Addr: os.Getenv("REDIS_URL"),
-		DB:   0, // use default DB
+		Addr:     os.Getenv("REDIS_URL"),
+		Password: password,
+		DB:       0, // use default DB
 	})
 	defer redisClient.Close()
 	// --- Redis Server Connection --- //
