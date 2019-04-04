@@ -2,6 +2,7 @@ package routes
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	c "github.com/jmilagroso/api/core"
@@ -25,6 +26,8 @@ func (authDBClient *AuthDBClient) Auth(w http.ResponseWriter, r *http.Request) {
 	_, err := authDBClient.
 		Query(&u, `SELECT id FROM users WHERE username = ? AND password = ?`, username, password)
 	h.Error(err)
+
+	log.Println(u)
 
 	if u.ID != "" {
 		h.Error(json.NewEncoder(w).Encode(authBackend.GenerateToken(u.ID)))

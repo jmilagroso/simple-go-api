@@ -5,6 +5,6 @@ import "log"
 // Error custom logger
 func Error(err error) {
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 }

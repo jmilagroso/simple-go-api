@@ -3,9 +3,11 @@ package routes
 import (
 	"encoding/json"
 	"net/http"
-	"os"
+	"runtime"
+	"strconv"
+	"strings"
+	"time"
 
-	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	h "github.com/jmilagroso/api/helpers"
 	m "github.com/jmilagroso/api/models"
@@ -16,52 +18,43 @@ type IndexDBClient m.DBClient
 
 // GetIndex - Get index route
 func (dbClient *IndexDBClient) GetIndex(w http.ResponseWriter, r *http.Request) {
-	key := "index"
 
-	// --- Redis Server Connection --- //
-	redisConn, err := redis.DialURL(os.Getenv("REDIS_URL"))
-	h.Error(err)
-	defer redisConn.Close()
-	// --- Redis Server Connection --- //
+	cache := h.CacheDBClient{DB: dbClient.DB, Conn: dbClient.Conn}
+	var cacheKey = "index"
 
-	val, err := redis.Bytes(redisConn.Do("GET", key))
-	h.Error(err)
-
-	var item m.Index
-
-	if val == nil {
-		item = m.Index{ServerTime: "nil", GoVersion: "nil"}
-		//item = m.Index{ServerTime: time.Now().String(), GoVersion: runtime.Version()}
-		//binary, err := msgpack.Marshal(&item)
-		//h.Error(err)
-		//dbClient.Conn.Do("SETEX", key, binary, 60*time.Second)
-	} else if err != nil {
-		//h.Error(err)
-		item = m.Index{ServerTime: "err1", GoVersion: "err1"}
+	if cache.CacheExists(cacheKey) {
+		h.Error(json.NewEncoder(w).Encode(cache.Get(cacheKey, m.Index{})))
 	} else {
-		//err = msgpack.Unmarshal([]byte(val), &item)
-		//h.Error(err)
-		item = m.Index{ServerTime: "err2", GoVersion: "err2"}
+		h.Error(json.NewEncoder(w).Encode(cache.Set(cacheKey, 60,
+			m.Index{
+				ServerTime:   time.Now().String(),
+				GoVersion:    runtime.Version(),
+				CacheTimeout: 60})))
 	}
-
-	h.Error(json.NewEncoder(w).Encode(item))
 }
 
 // GetUsers - Get users
 func (dbClient *IndexDBClient) GetUsers(w http.ResponseWriter, r *http.Request) {
-	// Collection container
-	var users []m.User
 
-	// @TODO Inject Caching using Heroku Redis (Needs account upgrade)
-	// @TODO Cache page_per_page = 1_10
-	// @TODO Cache timeout 30 secs
+	cache := h.CacheDBClient{DB: dbClient.DB, Conn: dbClient.Conn}
+	cacheKey := "users"
 
-	// Add resultset to `rows` variable via reference
-	_, err := dbClient.Query(&users, `SELECT id, username, email FROM users ORDER BY id DESC`)
-	h.Error(err)
+	if cache.CacheExists(cacheKey) {
+		h.Error(json.NewEncoder(w).Encode(cache.Get(cacheKey, []m.User{})))
+	} else {
+		// Collection container
+		var users []m.User
 
-	h.Error(json.NewEncoder(w).Encode(users))
+		// Add resultset to `rows` variable via reference
+		_, err := dbClient.Query(&users, `SELECT id, username, email FROM users ORDER BY id DESC`)
+		h.Error(err)
 
+		if users != nil {
+			h.Error(json.NewEncoder(w).Encode(cache.Set(cacheKey, 60, users)))
+		} else {
+			h.Error(json.NewEncoder(w).Encode(m.ErrorResponse{Message: "No Record(s) Found.", Status: 200}))
+		}
+	}
 }
 
 // GetUsersPaginated - Get users with paginated result
@@ -74,17 +67,28 @@ func (dbClient *IndexDBClient) GetUsersPaginated(w http.ResponseWriter, r *http.
 	perPage := h.StrToInt(vars["per_page"])
 	offset := (page - 1) * perPage
 
-	// @TODO Inject Caching using Heroku Redis (Needs account upgrade)
-	// @TODO Cache page_per_page = 1_10
-	// @TODO Cache timeout 30 secs
+	cache := h.CacheDBClient{DB: dbClient.DB, Conn: dbClient.Conn}
+	cacheKey := strings.Join([]string{"page_per_page_", strconv.Itoa(perPage), strconv.Itoa(offset)}, "")
 
-	// Output
-	var users []m.User
+	if cache.CacheExists(cacheKey) {
+		h.Error(json.NewEncoder(w).Encode(cache.Get(cacheKey, []m.User{})))
+	} else {
+		// Output
+		var users []m.User
 
-	_, err := dbClient.Query(&users, `SELECT id, username, email FROM users ORDER BY id DESC LIMIT ? OFFSET ?`, perPage, offset)
-	h.Error(err)
+		_, err := dbClient.Query(
+			&users,
+			`SELECT id, username, email FROM users ORDER BY id DESC LIMIT ? OFFSET ?`,
+			perPage,
+			offset)
+		h.Error(err)
 
-	h.Error(json.NewEncoder(w).Encode(users))
+		if users != nil {
+			h.Error(json.NewEncoder(w).Encode(cache.Set(cacheKey, 60, users)))
+		} else {
+			h.Error(json.NewEncoder(w).Encode(m.ErrorResponse{Message: "No Record(s) Found.", Status: 200}))
+		}
+	}
 }
 
 // GetUser - Get user by id
@@ -95,22 +99,24 @@ func (dbClient *IndexDBClient) GetUser(w http.ResponseWriter, r *http.Request) {
 
 	id := h.StrToInt(vars["id"])
 
-	// @TODO Inject Caching using Heroku Redis (Needs account upgrade)
-	// @TODO Cache page_per_page = 1_10
-	// @TODO Cache timeout 30 secs
+	cache := h.CacheDBClient{DB: dbClient.DB, Conn: dbClient.Conn}
+	cacheKey := strings.Join([]string{"user_", strconv.Itoa(id)}, "")
 
-	// Output
-	var user m.User
-
-	_, err := dbClient.Query(&user, `SELECT id, username, email FROM users WHERE id = ?`, id)
-	h.Error(err)
-
-	if user.ID != "" {
-		h.Error(json.NewEncoder(w).Encode(user))
+	if cache.CacheExists(cacheKey) {
+		h.Error(json.NewEncoder(w).Encode(cache.Get(cacheKey, m.User{})))
 	} else {
-		h.Error(json.NewEncoder(w).Encode(m.ErrorResponse{Message: "ID record not found.", Status: 200}))
-	}
+		// Output
+		var user m.User
 
+		_, err := dbClient.Query(&user, `SELECT id, username, email FROM users WHERE id = ?`, id)
+		h.Error(err)
+
+		if user != (m.User{}) {
+			h.Error(json.NewEncoder(w).Encode(cache.Set(cacheKey, 60, user)))
+		} else {
+			h.Error(json.NewEncoder(w).Encode(m.ErrorResponse{Message: "No Record(s) Found.", Status: 200}))
+		}
+	}
 }
 
 // NewUser - New user
@@ -119,10 +125,6 @@ func (dbClient *IndexDBClient) NewUser(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 	email := r.FormValue("email")
 	password := h.Hash256(r.FormValue("password"))
-
-	// @TODO Inject Caching using Heroku Redis (Needs account upgrade)
-	// @TODO Cache page_per_page = 1_10
-	// @TODO Cache timeout 30 secs
 
 	// Output
 	var users []m.User
