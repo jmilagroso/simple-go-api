@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"encoding/json"
+	"log"
 
 	"github.com/gomodule/redigo/redis"
 	m "github.com/jmilagroso/api/models"
@@ -14,9 +15,12 @@ type CacheDBClient m.DBClient
 func (dbClient *CacheDBClient) Set(key string, ttl int64, structure interface{}) interface{} {
 	serialized, err := json.Marshal(structure)
 	Error(err)
-	dbClient.Conn.Do("SET", key, string(serialized))
-	dbClient.Conn.Do("EXPIRE", key, 60)
-
+	s, err := dbClient.Conn.Do("SET", key, string(serialized))
+	Error(err)
+	log.Println(s)
+	t, err := dbClient.Conn.Do("EXPIRE", key, 60)
+	Error(err)
+	log.Println(t)
 	var deserialized = structure
 	val, err := redis.String(dbClient.Conn.Do("GET", key))
 

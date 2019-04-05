@@ -2,7 +2,8 @@
 
 Simple Go API
 
-  - Uses Posgresql
+  - Uses Posgresql (persistent storage)
+  - Uses Redis (caching)
   - Uses JWT
   - Heroku based config
 
@@ -28,15 +29,27 @@ $ ./check_issues.sh
 {
         "Issues": [],
         "Stats": {
-                "files": 17,
-                "lines": 533,
+                "files": 19,
+                "lines": 662,
                 "nosec": 0,
                 "found": 0
         }
 }%
 ```
 
-## Running Locally
+## Running on Local
+
+### Postgresql Add-on
+```sh
+$ heroku addons:create heroku-postgresql:hobby-dev
+```
+
+### Redis Add-on
+```sh
+$ heroku addons:create heroku-redis:hobby-dev
+```
+
+### Using `heroku local`
 ```sh
 $ cd github.com/jmilagroso
 $ go install ./...
@@ -47,7 +60,17 @@ OR
 $ heroku local -f Procfile
 ```
 
-## Usage
+### Setup .env
+```sh
+$ heroku config:get DATABASE_URL -s >> .env
+$ heroku config:get REDIS_URL -s >> .env
+```
+
+### Running with `.env` and different port
+```sh
+$ heroku local web -e .env -p 3001
+```
+## API Usage
 ```sh
 # Authenticate/Generate request token
 curl -X POST \
@@ -136,6 +159,8 @@ curl -X GET \
 
 ## References
 - https://devcenter.heroku.com/articles/getting-started-with-go
+- https://devcenter.heroku.com/categories/heroku-postgres
+- https://devcenter.heroku.com/articles/heroku-redis
 
 
 ## License

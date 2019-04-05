@@ -1,28 +1,9 @@
 {
-	"Issues": [
-		{
-			"severity": "LOW",
-			"confidence": "HIGH",
-			"rule_id": "G104",
-			"details": "Errors unhandled.",
-			"file": "/home/jay/work/src/github.com/jmilagroso/api/helpers/cache.go",
-			"code": "dbClient.Conn.Do(\"SET\", key, string(serialized))",
-			"line": "17"
-		},
-		{
-			"severity": "LOW",
-			"confidence": "HIGH",
-			"rule_id": "G104",
-			"details": "Errors unhandled.",
-			"file": "/home/jay/work/src/github.com/jmilagroso/api/helpers/cache.go",
-			"code": "dbClient.Conn.Do(\"EXPIRE\", key, 60)",
-			"line": "18"
-		}
-	],
+	"Issues": [],
 	"Stats": {
 		"files": 19,
-		"lines": 658,
+		"lines": 662,
 		"nosec": 0,
-		"found": 2
+		"found": 0
 	}
 }
