@@ -6,9 +6,9 @@ import (
 	h "github.com/jmilagroso/api/helpers"
 )
 
-func TestError(t *testing.T) {
-	v := h.Error()
-	if v != nil {
+func TestHash256(t *testing.T) {
+	v := h.Hash256("hello")
+	if v == "" {
 		t.Error("Expected some value, got ", v)
 	}
 }
